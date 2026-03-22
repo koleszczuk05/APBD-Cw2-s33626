@@ -3,9 +3,9 @@ using APBD_Cw2_s33626.Enums;
 
 public abstract class Device(string name, double dayCost)
 {
-    private static int idDevice = 1;
+    private static int _idDevice = 1;
 
-    public int Id { get; } =  idDevice++;
+    public int Id { get; } =  _idDevice++;
     public string Name { get; set; } = name;
     public string Description { get; set; } = "";
     public double DayCost { get; set; } = dayCost;
