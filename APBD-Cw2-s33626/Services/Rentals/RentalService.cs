@@ -59,16 +59,55 @@ public class RentalService(DataBase dataBase) : IRentalService
 
     public void ReturnDevice(int userId, int deviceId, DateTime returnDate)
     {
-        throw new NotImplementedException();
+        Rental rentalAct = null;
+        foreach (var rental in dataBase.Rentals)
+        {
+            if (rental.User.Id == userId && rental.Device.Id == deviceId && rental.ActDate == null)
+            {
+                rentalAct = rental;
+            }
+        }
+
+        if (rentalAct == null)
+        {
+            throw new ArgumentException("The User does not rent this device");
+        }
+
+        if (returnDate > rentalAct.EndDate)
+        {
+            var penalty = CalculatePenalty(rentalAct.EndDate, returnDate,rentalAct.Device);
+            Console.WriteLine($"The device was returned after it was supposed to so your Penalty is {penalty}");
+        }
+
+        rentalAct.Device.Status = DeviceStatus.Available;
+        rentalAct.ActDate = returnDate;
     }
 
     public void ListOverDueDevices()
     {
-        throw new NotImplementedException();
+        foreach (var rental in dataBase.Rentals)
+        {
+            if (rental.EndDate < DateTime.Now && rental.ActDate == null)
+            {
+                Console.WriteLine($"{rental.User.Id} - {rental.Device.Name} is a rental that is overdue");
+            }
+        }
     }
 
     public void CreateRentingRaport()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("RAPORT OF THE RENTAL OFFICE");
+        Console.WriteLine($"Number of users: {dataBase.Users.Count}");
+        Console.WriteLine($"Number of devices: {dataBase.Devices.Count}");
+        Console.WriteLine($"Number of active rentals: {dataBase.Rentals.Count(rental => rental.ActDate == null)}");
+        Console.WriteLine($"Number of finished rentals: {dataBase.Rentals.Count(rental => rental.ActDate != null)}");
+        Console.WriteLine($"Number of overdue rentals that was returned: {dataBase.Rentals.Count(rental => rental.ActDate != null && rental.ActDate >= rental.EndDate)}");
+        Console.WriteLine($"Number of devices that are currently overdue: {dataBase.Rentals.Count(rental => rental.ActDate == null && rental.EndDate < DateTime.Now)}");
+        
+    }
+
+    private double CalculatePenalty(DateTime endDate, DateTime actualEndDate, Device device)
+    {
+        return (actualEndDate - endDate).TotalDays * device.DayCost;
     }
 }
