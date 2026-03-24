@@ -3,7 +3,7 @@ using APBD_Cw2_s33626.Models;
 
 namespace APBD_Cw2_s33626.Services.Users;
 
-public class UserService(DataBase dataBase) : IUserService
+public class UserService(IDataBase dataBase) : IUserService
 {
     public void AddUser(User user)
     {

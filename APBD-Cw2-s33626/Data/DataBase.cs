@@ -2,7 +2,7 @@
 
 namespace APBD_Cw2_s33626.Data;
 
-public class DataBase()
+public class DataBase() : IDataBase
 {
     public List<Rental> Rentals { get; set; } = [];
     public List<User> Users { get; set; } = [];

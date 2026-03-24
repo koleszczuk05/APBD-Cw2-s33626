@@ -4,7 +4,7 @@ using APBD_Cw2_s33626.Models;
 
 namespace APBD_Cw2_s33626.Services.Rentals;
 
-public class RentalService(DataBase dataBase) : IRentalService 
+public class RentalService(IDataBase dataBase) : IRentalService 
 {
     public void RentDevice(int userId, int deviceId, DateTime startDate, DateTime endDate)
     {

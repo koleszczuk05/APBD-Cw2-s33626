@@ -4,7 +4,7 @@ using APBD_Cw2_s33626.Enums;
 
 namespace APBD_Cw2_s33626.Services.Devices;
 
-public class DeviceService(DataBase dataBase) : IDeviceService
+public class DeviceService(IDataBase dataBase) : IDeviceService
 {
     public void AddDevice(Device device)
     {
